@@ -1,2 +1,16 @@
 # CODSOFT
-This repository contains all the tasks and projects completed during my CodSoft Internship (September 2025 Batch - B49).  It includes assignments in Python with clean code, proper documentation, and project demonstrations.  Each task folder has source code, output screenshots/videos, and a README for easy understanding. 
+This repository contains all tasks and projects completed during my **CodSoft Internship**.  
+
+##  Contents
+- Task 1: TO-DO LIST. ✅
+- Task 2: CALCULATOR.  
+- Task 3: PASSWORD GENERATOR.
+
+
+## 🚀 Tech Stack
+- Python. 
+- GitHub for version control
+
+## 📌 Notes
+- Each task folder contains the source code and documentation.  
+- Video demonstrations will be shared on LinkedIn as per internship requirements.  
