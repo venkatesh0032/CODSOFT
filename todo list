@@ -1,0 +1,144 @@
+# todo.py
+
+import json
+import os
+from colorama import Fore, Style, init
+
+# Initialize colorama
+init(autoreset=True)
+
+TASKS_FILE = "tasks.json"
+tasks = []  # List to store all tasks
+
+
+# ----------------- Utility Functions -----------------
+def save_tasks():
+    """Save tasks to a JSON file"""
+    with open(TASKS_FILE, "w") as f:
+        json.dump(tasks, f, indent=4)
+
+
+def load_tasks():
+    """Load tasks from a JSON file"""
+    global tasks
+    if os.path.exists(TASKS_FILE):
+        with open(TASKS_FILE, "r") as f:
+            tasks = json.load(f)
+
+
+# ----------------- Task Functions -----------------
+def show_tasks():
+    """Display all tasks"""
+    if not tasks:
+        print(Fore.YELLOW + "\n📌 No tasks available!\n")
+    else:
+        print(Fore.CYAN + "\n📋 Your To-Do List:")
+        for i, task in enumerate(tasks, 1):
+            status = Fore.GREEN + "✅ Done" if task['done'] else Fore.RED + "❌ Not Done"
+            due = f" (🕒 Due: {task['due']})" if task['due'] else ""
+            print(f"{i}. {task['title']} [{task['category']}] ---> {status}{due}")
+    print()
+
+
+def add_task():
+    """Add a new task"""
+    title = input("✏ Enter task: ").strip()
+    if not title:
+        print(Fore.RED + "⚠ Task cannot be empty!\n")
+        return
+
+    category = input("📂 Enter category (Work/Study/Personal/General): ").capitalize()
+    if category not in ["Work", "Study", "Personal", "General"]:
+        category = "General"
+
+    due = input("🕒 Enter due date (optional, e.g., 2025-09-01): ").strip()
+
+    tasks.append({"title": title, "done": False, "category": category, "due": due})
+    save_tasks()
+    print(Fore.GREEN + "✔ Task added successfully!\n")
+
+
+def mark_done():
+    """Mark a task as completed"""
+    show_tasks()
+    try:
+        task_no = int(input("✅ Enter task number to mark as done: "))
+        tasks[task_no - 1]["done"] = True
+        save_tasks()
+        print(Fore.GREEN + "✔ Task marked as done!\n")
+    except (ValueError, IndexError):
+        print(Fore.RED + "⚠ Invalid task number!\n")
+
+
+def delete_task():
+    """Delete a task"""
+    show_tasks()
+    try:
+        task_no = int(input("🗑 Enter task number to delete: "))
+        removed = tasks.pop(task_no - 1)
+        save_tasks()
+        print(Fore.GREEN + f"🗑 Task '{removed['title']}' deleted!\n")
+    except (ValueError, IndexError):
+        print(Fore.RED + "⚠ Invalid task number!\n")
+
+
+def update_task():
+    """Update an existing task"""
+    show_tasks()
+    try:
+        task_no = int(input("✏ Enter task number to update: "))
+        task = tasks[task_no - 1]
+
+        new_title = input(f"🔤 Enter new title (press Enter to keep '{task['title']}'): ").strip()
+        if new_title:
+            task["title"] = new_title
+
+        new_category = input(f"📂 Enter new category (Work/Study/Personal/General) [current: {task['category']}]: ").capitalize()
+        if new_category in ["Work", "Study", "Personal", "General"]:
+            task["category"] = new_category
+
+        new_due = input(f"🕒 Enter new due date (press Enter to keep '{task['due']}'): ").strip()
+        if new_due:
+            task["due"] = new_due
+
+        save_tasks()
+        print(Fore.GREEN + "✔ Task updated successfully!\n")
+
+    except (ValueError, IndexError):
+        print(Fore.RED + "⚠ Invalid task number!\n")
+
+
+# ----------------- Main Menu -----------------
+def main():
+    """Main program loop"""
+    load_tasks()
+    while True:
+        print(Fore.BLUE + Style.BRIGHT + "===== 📌 TO-DO LIST MENU =====")
+        print("1️⃣  Show tasks")
+        print("2️⃣  Add task")
+        print("3️⃣  Mark task as done")
+        print("4️⃣  Delete task")
+        print("5️⃣  Update task")
+        print("6️⃣  Exit")
+
+        choice = input("👉 Choose an option (1-6): ").strip()
+
+        if choice == "1":
+            show_tasks()
+        elif choice == "2":
+            add_task()
+        elif choice == "3":
+            mark_done()
+        elif choice == "4":
+            delete_task()
+        elif choice == "5":
+            update_task()
+        elif choice == "6":
+            print(Fore.CYAN + "👋 Exiting... Goodbye!")
+            break
+        else:
+            print(Fore.RED + "⚠ Invalid choice! Try again.\n")
+
+
+if __name__ == "__main__":
+    main()
