@@ -1,0 +1,59 @@
+# calculator.py
+
+def calculator():
+    print("===== Simple Calculator =====")
+    print("Select operation:")
+    print("1️⃣  Addition (+)")
+    print("2️⃣  Subtraction (-)")
+    print("3️⃣  Multiplication (*)")
+    print("4️⃣  Division (/)")
+    print("5️⃣  Modulus (%)")
+    print("6️⃣  Exponent (**)")
+    print("7️⃣  Floor Division (//)")
+
+    try:
+        num1 = float(input("\nEnter first number: "))
+        num2 = float(input("Enter second number: "))
+        choice = input("Enter operation (1-7 or symbol [+ - * / % ** //]): ").strip()
+
+        result = None
+
+        if choice in ["1", "+"]:
+            result = num1 + num2
+        elif choice in ["2", "-"]:
+            result = num1 - num2
+        elif choice in ["3", "*"]:
+            result = num1 * num2
+        elif choice in ["4", "/"]:
+            if num2 != 0:
+                result = num1 / num2
+            else:
+                print("⚠ Error: Division by zero is not allowed!")
+        elif choice in ["5", "%"]:
+            if num2 != 0:
+                result = num1 % num2
+            else:
+                print("⚠ Error: Modulus by zero is not allowed!")
+        elif choice in ["6", "**"]:
+            result = num1 ** num2
+        elif choice in ["7", "//"]:
+            if num2 != 0:
+                result = num1 // num2
+            else:
+                print("⚠ Error: Floor division by zero is not allowed!")
+        else:
+            print("⚠ Invalid choice!")
+
+        if result is not None:
+            print(f"\n✅ Result: {result}\n")
+
+    except ValueError:
+        print("⚠ Invalid input! Please enter numbers only.")
+
+if __name__ == "__main__":
+    while True:
+        calculator()
+        again = input(" Do you want to perform another calculation? (y/n): ").lower()
+        if again != "y":
+            print("👋 Exiting Calculator. Goodbye!")
+            break
