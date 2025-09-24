@@ -1,1 +1,50 @@
+# password_generator.py
+
+import random
+import string
+
+def generate_password(length, use_uppercase=True, use_numbers=True, use_symbols=True):
+    """Generate a secure random password"""
+
+    # Always include lowercase letters
+    characters = list(string.ascii_lowercase)
+
+    if use_uppercase:
+        characters.extend(string.ascii_uppercase)
+    if use_numbers:
+        characters.extend(string.digits)
+    if use_symbols:
+        characters.extend(string.punctuation)
+
+    if not characters:
+        return "⚠ Error: No character set selected!"
+
+    # Random password generation
+    password = ''.join(random.choice(characters) for _ in range(length))
+    return password
+
+
+def main():
+    print("=====  Password Generator =====")
+
+    try:
+        length = int(input("Enter password length: "))
+
+        if length <= 0:
+            print("⚠ Password length must be greater than 0!")
+            return
+
+        use_uppercase = input("Include uppercase letters? (y/n): ").lower() == "y"
+        use_numbers = input("Include numbers? (y/n): ").lower() == "y"
+        use_symbols = input("Include symbols? (y/n): ").lower() == "y"
+
+        password = generate_password(length, use_uppercase, use_numbers, use_symbols)
+
+        print(f"\n✅ Generated Password: {password}\n")
+
+    except ValueError:
+        print("⚠ Invalid input! Please enter a number for length.")
+
+if __name__ == "__main__":
+    main()
 
